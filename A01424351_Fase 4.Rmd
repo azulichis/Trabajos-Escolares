@@ -1,0 +1,1260 @@
+---
+title: 'Proyecto Ciencia de Datos'
+author: "Azul Fernanda Paniagua Bucio"
+subtitle: "MA1042: Matemáticas y ciencia de datos para la toma de decisiones"
+output: 
+  html_document: 
+    toc: yes
+    highlight: tango
+    theme: readable
+    df_print: kable
+---
+
+
+# Fase 2
+## Lectura de datos
+
+````{r}
+
+setwd("C:/Users/azulp/Downloads")
+
+library(readxl)
+datos<- read_excel("./A01424351_Bitacora.xlsx",sheet = "Información")   
+attach(datos)
+
+
+````
+
+
+## Limpieza de datos
+
+
+````{r}
+
+library(janitor)
+
+datos<-clean_names(datos)
+
+head(datos)
+
+````
+
+## Revisión rápida
+````{r}
+
+library(naniar)
+skimr::skim(datos)
+pct_miss(datos)
+vis_miss(datos)
+
+```` 
+## Imputación
+
+En esta parte hacemos imputación y checamos normalidad
+
+### Columna de producto
+
+
+````{r}
+
+library(fdth)
+moda_producto <- mfv(datos$producto)
+datos$producto[is.na(datos$producto)] <- moda_producto
+moda_producto
+
+
+````
+### Columna de calorías
+
+No hay normalidad
+
+
+````{r}
+
+mediana_cal <- median(datos$calorias_kcal, na.rm = TRUE)
+datos$calorias_kcal[is.na(datos$calorias_kcal)] <- mediana_cal
+
+qqnorm(datos$calorias_kcal)
+
+qqline(datos$calorias_kcal)
+
+````
+### Columna de carbohidratos
+
+No hay normalidad
+
+````{r}
+
+mediana_carb <- median(datos$carbohidratos_gramos, na.rm = TRUE)
+datos$carbohidratos_gramos[is.na(datos$carbohidratos_gramos)] <- mediana_carb
+
+qqnorm(datos$carbohidratos_gramos)
+
+qqline(datos$carbohidratos_gramos)
+
+````
+### Columna de colesterol
+
+No hay normalidad
+
+
+````{r}
+
+mediana_col <- median(datos$colesterol_miligramos, na.rm = TRUE)
+datos$colesterol_miligramos[is.na(datos$colesterol_miligramos)] <- mediana_col
+
+qqnorm(datos$colesterol_miligramos)
+
+qqline(datos$colesterol_miligramos)
+
+````
+
+### Columna de grasas totales
+
+No hay normalidad
+
+````{r}
+
+mediana_grasas_tot <- median(datos$grasas_totales_gramos, na.rm = TRUE)
+datos$grasas_totales_gramos[is.na(datos$grasas_totales_gramos)] <- mediana_grasas_tot
+
+qqnorm(datos$grasas_totales_gramos)
+
+qqline(datos$grasas_totales_gramos)
+
+````
+
+
+### Columna de grasas saturadas
+
+No hay normalidad
+
+````{r}
+
+mediana_grasas_sat <- median(datos$grasas_saturadas_gramos, na.rm = TRUE)
+datos$grasas_saturadas_gramos[is.na(datos$grasas_saturadas_gramos)] <- mediana_grasas_sat
+
+qqnorm(datos$grasas_saturadas_gramos)
+
+qqline(datos$grasas_saturadas_gramos)
+````
+
+### Columna de grasas trans
+
+Hay muy poca normalidad
+
+````{r}
+
+mediana_grasas_trans <- median(datos$grasas_trans_gramos, na.rm = TRUE)
+datos$grasas_trans_gramos[is.na(datos$grasas_trans_gramos)] <- mediana_grasas_trans
+
+qqnorm(datos$grasas_trans_gramos)
+
+qqline(datos$grasas_trans_gramos)
+
+````
+
+### Columna de proteína
+
+No hay normalidad
+
+````{r}
+
+mediana_prot <- median(datos$proteina_gramos, na.rm = TRUE)
+datos$proteina_gramos[is.na(datos$proteina_gramos)] <- mediana_prot
+
+qqnorm(datos$proteina_gramos)
+
+qqline(datos$proteina_gramos)
+````
+
+### Columna de sodio
+
+No hay normalidad
+
+````{r}
+
+mediana_sodio <- median(datos$sodio_miligramos, na.rm = TRUE)
+datos$sodio_miligramos[is.na(datos$sodio_miligramos)] <- mediana_sodio
+
+qqnorm(datos$sodio_miligramos)
+
+qqline(datos$sodio_miligramos)
+````
+
+### Columna de azúcares
+
+No hay normalidad
+
+````{r}
+
+mediana_azuc <- median(datos$azucares_gramos, na.rm = TRUE)
+datos$azucares_gramos[is.na(datos$azucares_gramos)] <- mediana_azuc
+
+qqnorm(datos$azucares_gramos)
+
+qqline(datos$azucares_gramos)
+
+````
+
+### Columna de fibra
+
+No hay normalidad 
+
+````{r}
+
+mediana_fib <- median(datos$fibra_gramos, na.rm = TRUE)
+datos$fibra_gramos[is.na(datos$fibra_gramos)] <- mediana_fib
+
+qqnorm(datos$fibra_gramos)
+
+qqline(datos$fibra_gramos)
+
+````
+### Columna de potasio
+
+No hay normalidad
+
+````{r}
+
+mediana_pot <- median(datos$potasio_miligramos, na.rm = TRUE)
+datos$potasio_miligramos[is.na(datos$potasio_miligramos)] <- mediana_pot
+
+qqnorm(datos$potasio_miligramos)
+
+qqline(datos$potasio_miligramos)
+
+````
+
+### Columna de calcio
+
+No hay normalidad
+
+````{r}
+
+mediana_calc <- median(datos$calcio_miligramos, na.rm = TRUE)
+datos$calcio_miligramos[is.na(datos$calcio_miligramos)] <- mediana_calc
+
+qqnorm(datos$calcio_miligramos)
+
+qqline(datos$calcio_miligramos)
+
+````
+
+### Columna de hierro
+
+No hay normalidad 
+
+````{r}
+
+mediana_hie <- median(datos$hierro_miligramos, na.rm = TRUE)
+datos$hierro_miligramos[is.na(datos$hierro_miligramos)] <- mediana_hie
+
+qqnorm(datos$hierro_miligramos)
+
+qqline(datos$hierro_miligramos)
+
+````
+
+### Columna de vitamina A
+
+No hay normalidad
+
+````{r}
+
+mediana_vita <- median(datos$vitamina_a_mg, na.rm = TRUE)
+datos$vitamina_a_mg[is.na(datos$vitamina_a_mg)] <- mediana_vita
+
+qqnorm(datos$vitamina_a_mg)
+
+qqline(datos$vitamina_a_mg)
+
+````
+
+### Columna de vitamina C
+
+No hay normalidad
+
+````{r}
+
+mediana_vitc <- median(datos$vitamina_c_mg, na.rm = TRUE)
+datos$vitamina_c_mg[is.na(datos$vitamina_c_mg)] <- mediana_vitc
+
+qqnorm(datos$vitamina_c_mg)
+
+qqline(datos$vitamina_c_mg)
+
+````
+
+### Columna de vitamina d
+
+No hay normalidad
+
+````{r}
+
+mediana_vitd <- median(datos$vitamina_d_mg, na.rm = TRUE)
+datos$vitamina_d_mg[is.na(datos$vitamina_d_mg)] <- mediana_vitd
+
+qqnorm(datos$vitamina_d_mg)
+
+qqline(datos$vitamina_d_mg)
+
+````
+
+### Columna de porciones por envase
+
+Hay muy poca normalidad 
+
+````{r}
+
+mediana_porc <- median(datos$porciones_por_envase, na.rm = TRUE)
+datos$porciones_por_envase[is.na(datos$porciones_por_envase)] <- mediana_porc
+
+qqnorm(datos$porciones_por_envase)
+
+qqline(datos$porciones_por_envase)
+
+````
+
+### Columna de tamaño de la porción
+
+No hay normalidad
+
+````{r}
+
+mediana_tam <- median(datos$tamano_de_la_porcion_gramos, na.rm = TRUE)
+datos$tamano_de_la_porcion_gramos[is.na(datos$tamano_de_la_porcion_gramos)] <- mediana_tam
+
+qqnorm(datos$tamano_de_la_porcion_gramos)
+
+qqline(datos$tamano_de_la_porcion_gramos)
+
+````
+## Transformación de variables Box-Cox
+
+
+Esto lo haremos para aquellas variables que vamos a usar en el análisis: calorías, carbohidratos, colesterol, grasas totales, proteína, sodio, azúcares, fibra, potasio y calcio. Una vez hecha la transformación, se compararán los histogramas del antes y el después.
+
+
+### Box-Cox usando forecast
+
+#### Calorías
+````{r}
+
+library(forecast)
+
+lambda_opt <- BoxCox.lambda(datos$calorias_kcal)
+lambda_opt
+
+calorias_transf <- BoxCox(datos$calorias_kcal,lambda_opt)
+````
+
+Ahora comparamos los histogramas del antes y después de la transformación
+
+
+````{r}
+
+par(mfrow=c(1,2))
+hist(datos$calorias_kcal,col="lightgreen",main="Datos originales (calorías)",
+     xlab="x",ylab="Frecuencia absoluta")
+
+hist(calorias_transf,col="lightpink",main="Datos transformados (calorías)",
+     xlab="x",ylab="Frecuencia absoluta")
+````
+
+Como podemos ver, ya hay más normalidad que antes
+
+Hacemos una prueba de hipótesis
+
+
+````{r}
+
+shapiro.test(datos$calorias_kcal)
+shapiro.test(calorias_transf)
+
+par(mfrow=c(1,2))
+boxplot(datos$calorias_kcal,col="lightgreen")
+boxplot(calorias_transf,col="lightpink")
+
+
+````
+Como podemos observar, al hacer la transformación de los datos ya no nos muestra datos atípicos. Además, el valor p al momento de hacer la transformación aumenta. En este caso nos vamos a quedar con las calorías transformadas
+
+#### Carbohidratos
+
+````{r}
+
+lambda_opt_carbs <- BoxCox.lambda(datos$carbohidratos_gramos)
+lambda_opt_carbs
+
+carbs_transf <- BoxCox(datos$carbohidratos_gramos, lambda_opt_carbs)
+````
+Ahora comparamos los histogramas del antes y después de la transformación
+
+
+````{r}
+
+par(mfrow=c(1,2))
+hist(datos$carbohidratos_gramos,col="lightgreen",main="Datos originales (carbohidratos)",
+     xlab="x",ylab="Frecuencia absoluta")
+
+hist(carbs_transf,col="lightpink",main="Datos transformados (carbohidratos)",
+     xlab="x",ylab="Frecuencia absoluta")
+````
+
+Muestra un poco más de normalidad, sin embargo no lo es al 100%
+
+Hacemos una prueba de hipótesis
+
+
+````{r}
+
+shapiro.test(datos$carbohidratos_gramos)
+shapiro.test(carbs_transf)
+
+par(mfrow=c(1,2))
+boxplot(datos$carbohidratos_gramos,col="lightgreen")
+boxplot(carbs_transf,col="lightpink")
+
+
+````
+
+En este caso aún hay datos atípicos en los carbohidratos, sin embargo son menos que los que habían antes de la transformación. El valor p aumenta al hacer la transformación, lo cual indica que es buena opción quedarnos con esta transformación. 
+
+### Colesterol
+
+````{r}
+
+lambda_opt_col <- BoxCox.lambda(datos$colesterol_miligramos)
+lambda_opt_col
+
+col_transf <- BoxCox(datos$colesterol_miligramos, lambda_opt_col)
+````
+Ahora comparamos los histogramas del antes y después de la transformación
+
+
+````{r}
+
+par(mfrow=c(1,2))
+hist(datos$colesterol_miligramos,col="lightgreen",main="Datos originales (colesterol)",
+     xlab="x",ylab="Frecuencia absoluta")
+
+hist(col_transf,col="lightpink",main="Datos transformados (colesterol)",
+     xlab="x",ylab="Frecuencia absoluta")
+````
+
+En este caso ocurre algo distinto a las variables anteriores, ya que al momento de hacer la transformación nos da unos valores negativos, y en la vida real no existen medidas de colesterol negativo.
+
+Hacemos una prueba de hipótesis
+
+
+````{r}
+
+shapiro.test(datos$colesterol_miligramos)
+shapiro.test(col_transf)
+
+par(mfrow=c(1,2))
+boxplot(datos$colesterol_miligramos,col="lightgreen")
+boxplot(col_transf,col="lightpink")
+
+
+````
+
+Con la transformaación ya no hay datos atípicos. Sin embargo, el valor p se queda igual. Al hacer la transformación algunos datos son negativos, por lo cual vamos a quedarnos con los datos sin transformar
+
+### Grasas totales
+
+````{r}
+
+lambda_opt_grasas <- BoxCox.lambda(datos$grasas_totales_gramos)
+lambda_opt_grasas
+
+grasas_transf <- BoxCox(datos$grasas_totales_gramos, lambda_opt_grasas)
+````
+Es probable que el caso del colesterol se repita para las grasas totales
+
+Ahora comparamos los histogramas del antes y después de la transformación
+
+
+````{r}
+
+par(mfrow=c(1,2))
+hist(datos$grasas_totales_gramos,col="lightgreen",main="Datos originales (grasas totales)",
+     xlab="x",ylab="Frecuencia absoluta")
+
+hist(grasas_transf,col="lightpink",main="Datos transformados (grasas totales)",
+     xlab="x",ylab="Frecuencia absoluta")
+````
+
+Nuestra hipótesis fue correcta, ya que así como en el caso del colesterol, al hacer la transformación salieron valores negativos. 
+
+Ahora hacemos una comparación con la caja de bigotes y hacemos un shapiro test
+
+
+````{r}
+
+shapiro.test(datos$grasas_totales_gramos)
+shapiro.test(grasas_transf)
+
+par(mfrow=c(1,2))
+boxplot(datos$grasas_totales_gramos,col="lightgreen")
+boxplot(grasas_transf,col="lightpink")
+
+
+````
+
+Al hacer la transformación ya no hay valores atípicos. El valor p es el mismo antes y después de la transformación. Al hacer la transformación algunos datos son negativos, por lo cual vamos a quedarnos con los datos sin transformar
+
+### Proteína
+
+````{r}
+
+lambda_opt_prot <- BoxCox.lambda(datos$proteina_gramos)
+lambda_opt_prot
+
+prot_transf <- BoxCox(datos$proteina_gramos, lambda_opt_col)
+````
+
+Para el caso de la proteína ocurrirá lo mismo que con el colesterol y las grasas totales ya que nos dio como resultado un valor positivo
+
+Ahora comparamos los histogramas del antes y después de la transformación
+
+
+````{r}
+
+par(mfrow=c(1,2))
+hist(datos$proteina_gramos,col="lightgreen",main="Datos originales (proteína)",
+     xlab="x",ylab="Frecuencia absoluta")
+
+hist(prot_transf,col="lightpink",main="Datos transformados (proteína)",
+     xlab="x",ylab="Frecuencia absoluta")
+````
+
+No se ve normalidad
+
+Ahora hacemos una comparación con la caja de bigotes y hacemos un shapiro test
+
+
+````{r}
+
+shapiro.test(datos$proteina_gramos)
+shapiro.test(prot_transf)
+
+par(mfrow=c(1,2))
+boxplot(datos$proteina_gramos,col="lightgreen")
+boxplot(prot_transf,col="lightpink")
+
+
+````
+
+Al hacer la transformación nos encontramos con un dato atípico. El valor p se quedó igual. En este caso nos quedaremos con los datos sin transformar
+
+### Sodio
+
+````{r}
+
+lambda_opt_sodio <- BoxCox.lambda(datos$sodio_miligramos)
+lambda_opt_sodio
+
+sodio_transf <- BoxCox(datos$sodio_miligramos, lambda_opt_sodio)
+````
+
+Aquí también ocurrirá lo mismo que en los últimos tres casos
+
+Ahora comparamos los histogramas del antes y después de la transformación
+
+
+````{r}
+
+par(mfrow=c(1,2))
+hist(datos$sodio_miligramos,col="lightgreen",main="Datos originales (sodio)",
+     xlab="x",ylab="Frecuencia absoluta")
+
+hist(sodio_transf,col="lightpink",main="Datos transformados (sodio)",
+     xlab="x",ylab="Frecuencia absoluta")
+````
+
+
+No se ve normalidad
+
+Ahora hacemos una comparación con la caja de bigotes y hacemos un shapiro test
+
+
+````{r}
+
+shapiro.test(datos$sodio_miligramos)
+shapiro.test(sodio_transf)
+
+par(mfrow=c(1,2))
+boxplot(datos$sodio_miligramos,col="lightgreen")
+boxplot(sodio_transf,col="lightpink")
+
+
+````
+
+Esta transformación nos generó un dato atípico. El valor p se quedó igual. Nos quedaremos con los datos sin transformar.
+
+
+### Azúcares
+
+````{r}
+
+lambda_opt_azuc <- BoxCox.lambda(datos$azucares_gramos)
+lambda_opt_azuc
+
+azuc_transf <- BoxCox(datos$azucares_gramos, lambda_opt_azuc)
+````
+
+Ahora comparamos los histogramas del antes y después de la transformación
+
+````{r}
+
+par(mfrow=c(1,2))
+hist(datos$azucares_gramos,col="lightgreen",main="Datos originales (azúcares)",
+     xlab="x",ylab="Frecuencia absoluta")
+
+hist(azuc_transf,col="lightpink",main="Datos transformados (azúcares)",
+     xlab="x",ylab="Frecuencia absoluta")
+````
+
+No se ve normalidad
+
+Ahora hacemos una comparación con la caja de bigotes y hacemos un shapiro test
+
+
+````{r}
+
+shapiro.test(datos$azucares_gramos)
+shapiro.test(azuc_transf)
+
+par(mfrow=c(1,2))
+boxplot(datos$azucares_gramos,col="lightgreen")
+boxplot(azuc_transf,col="lightpink")
+
+
+````
+
+Podemos ver que ya hay menos valores atípicos, antes habían dos y ahora hay uno solamente. El valor p se quedó igual. Al hacer la transformación algunos datos son negativos, por lo cual vamos a quedarnos con los datos sin transformar
+### Fibra
+
+````{r}
+
+lambda_opt_fibra <- BoxCox.lambda(datos$fibra_gramos)
+lambda_opt_fibra
+
+fibra_transf <- BoxCox(datos$fibra_gramos, lambda_opt_fibra)
+````
+
+Ahora comparamos los histogramas del antes y después de la transformación
+
+````{r}
+
+par(mfrow=c(1,2))
+hist(datos$fibra_gramos,col="lightgreen",main="Datos originales (fibra)",
+     xlab="x",ylab="Frecuencia absoluta")
+
+hist(fibra_transf,col="lightpink",main="Datos transformados (fibra)",
+     xlab="x",ylab="Frecuencia absoluta")
+````
+
+Al hacer la transformación está más cerca de verse normal
+
+Ahora hacemos una comparación con la caja de bigotes y hacemos un shapiro test
+
+
+````{r}
+
+shapiro.test(datos$fibra_gramos)
+shapiro.test(fibra_transf)
+
+par(mfrow=c(1,2))
+boxplot(datos$fibra_gramos,col="lightgreen")
+boxplot(fibra_transf,col="lightpink")
+
+
+````
+
+Ahora hay un dato atípico más después de hacer la transformación. El valor p se quedó igual. Nos quedaremos con los datos sin transformar. 
+
+### Potasio
+
+````{r}
+
+
+lambda_opt_pot <- BoxCox.lambda(datos$potasio_miligramos)
+lambda_opt_pot
+
+pot_transf <- BoxCox(datos$potasio_miligramos, lambda_opt_pot)
+````
+
+Ahora comparamos los histogramas del antes y después de la transformación
+
+````{r}
+
+par(mfrow=c(1,2))
+hist(datos$potasio_miligramos,col="lightgreen",main="Datos originales (potasio)",
+     xlab="x",ylab="Frecuencia absoluta")
+
+hist(pot_transf,col="lightpink",main="Datos transformados (potasio)",
+     xlab="x",ylab="Frecuencia absoluta")
+````
+
+Ahora hacemos una comparación con la caja de bigotes y hacemos un shapiro test
+
+
+````{r}
+
+shapiro.test(datos$potasio_miligramos)
+shapiro.test(pot_transf)
+
+par(mfrow=c(1,2))
+boxplot(datos$potasio_miligramos,col="lightgreen")
+boxplot(pot_transf,col="lightpink")
+
+
+````
+
+Esta vez en vez de que el dato atípico sea un valor muy grande, el dato atípico es un valor muy pequeño. El valor p se quedó igual. Vamos a usar los datos sin transformar
+
+### Calcio
+
+````{r}
+
+lambda_opt_calc <- BoxCox.lambda(datos$calcio_miligramos)
+lambda_opt_calc
+
+calc_transf <- BoxCox(datos$calcio_miligramos, lambda_opt_calc)
+````
+
+Ahora comparamos los histogramas del antes y después de la transformación
+
+````{r}
+
+par(mfrow=c(1,2))
+hist(datos$calcio_miligramos,col="lightgreen",main="Datos originales (calcio)",
+     xlab="x",ylab="Frecuencia absoluta")
+
+hist(calc_transf,col="lightpink",main="Datos transformados (calcio)",
+     xlab="x",ylab="Frecuencia absoluta")
+````
+No se ve cerca de ser normal
+
+Ahora hacemos una comparación con la caja de bigotes y hacemos un shapiro test
+
+
+````{r}
+
+shapiro.test(datos$calcio_miligramos)
+shapiro.test(calc_transf)
+
+par(mfrow=c(1,2))
+boxplot(datos$calcio_miligramos,col="lightgreen")
+boxplot(calc_transf,col="lightpink")
+
+
+````
+
+Como pasó con el potasio, ahora en vez de tener un valor típico máximo, ahora hay uno mínimo. El valor p se quedó igual. Vamos a usar los datos sin transformar
+
+
+Vamos a usar la variable producto como factor, así que hacemos la transformación. Esto con la finalidad de poder analizar la relación de las calorías con el producto
+
+````{r}
+
+comida<- as.factor(datos$producto)
+
+````
+
+
+Ahora vamos a juntar todas estas nuevas variables en una sola tabla. Para esto necesitamos usar la función data.frame. Esto con la finalidad de después poder separar hacer dos grupos distintos: uno con calorías bajas y otro con calorías altas. 
+
+````{r}
+
+datos2 <- data.frame(comida = comida, calorias = calorias_transf, carbohidratos = 
+                carbs_transf, colesterol = datos$colesterol_miligramos, grasas = 
+                datos$grasas_totales_gramos, proteina = datos$proteina_gramos, sodio =
+                datos$sodio_miligramos, azucar = datos$azucares_gramos, fibra = 
+                datos$fibra_gramos, potasio = datos$potasio_miligramos, calcio = 
+                datos$calcio_miligramos)
+str(datos2)
+````
+
+
+## Filtramos las calorías
+
+
+````{r}
+
+q25 <- quantile(datos2$calorias, probs=0.25)
+q25
+
+calorias_bajas <- datos2[datos2$calorias<= q25,]
+
+calorias_altas <- datos2[datos2$calorias>q25,]
+````
+# Fase 3
+## Comparaciones
+
+Haremos comparaciones entre los dos grupos de calorías con un intervalo de confianza del 96%
+
+````{r}
+# carbohidratos
+compara_carbs <- t.test(calorias_altas$carbohidratos,calorias_bajas$carbohidratos, conf.level = 0.96, paired=F)
+
+compara_carbs$conf.int
+
+# colesterol
+compara_col <- t.test(calorias_altas$colesterol,calorias_bajas$colesterol, conf.level = 0.96, paired=F)
+
+compara_col$conf.int
+
+# grasas totales
+compara_grasas <- t.test(calorias_altas$grasas,calorias_bajas$grasas, conf.level = 0.96, paired=F)
+
+compara_grasas$conf.int
+
+# proteína
+compara_prot <- t.test(calorias_altas$proteina,calorias_bajas$proteina, conf.level = 0.96, paired=F)
+
+compara_prot$conf.int
+
+# sodio
+compara_sodio <- t.test(calorias_altas$sodio,calorias_bajas$sodio, conf.level = 0.96, paired=F)
+
+compara_sodio$conf.int
+
+# azúcares
+
+compara_azuc <- t.test(calorias_altas$azucar,calorias_bajas$azucar, conf.level = 0.96, paired=F)
+
+compara_azuc$conf.int
+
+# fibra
+
+compara_fibra <- t.test(calorias_altas$fibra,calorias_bajas$fibra, conf.level = 0.96, paired=F)
+
+compara_fibra$conf.int
+
+# potasio
+
+compara_pot <- t.test(calorias_altas$potasio,calorias_bajas$potasio, conf.level = 0.96, paired=F)
+
+compara_pot$conf.int
+
+# calcio
+
+compara_calc <- t.test(calorias_altas$calcio,calorias_bajas$calcio, conf.level = 0.96, paired=F)
+
+compara_calc$conf.int
+````
+
+Si primero analizamos los carbohidratos, nos damos cuenta que la cantidad de carbohidratos en los alimentos con calorías altas es mayor a los alimentos con calorías bajas. Para el caso del colesterol, el intervalo solo tiene valores positivos, por lo tanto el colesterol es mayor en las calorías altas. Lo mismo ocurre para las grasas totales, la proteína, el sodio, la fibra y el calcio. Para el caso de los azúcares y del potasio, ambos valores de los intervalos tienen signos distintos, por lo que se puede decir que los grupos son iguales. Esto se debe a que varios de los alimentos altos en calorías que consumo tienen azúcares refinadas, y también la fruta (alimento dentro de las calorías bajas) tiene azúcar, aunque sea azúcar natural.
+
+### Relación con los alimentos
+
+La razón por la que se obtuvieron estos resultados es porque cuando como alimentos altos en calorías, suelen tener altas cantidades de grasas, carbohidratos, colesterol y proteína. Debido a que casi no como dulces ni bebidas que no sean agua, la mayor cantidad de azúcar que ingiero proviene de la fruta. La fruta la desayuno todos los días, y a pesar de ser azúcar natural, es decir, no es azúcar añadida, debo regular mi consumo de fruta. Otro alimento que consumo muy seguido y debo modificarlo son las ensaladas. Como ensalada al menos 5 veces a la semana, a pesar de que se dice que las ensaladas son sanas, debemos saber cómo hacerlas bien. No le pongo aderezo a mis ensaladas, lo cual es mucha grasa, pero le pongo pollo bbq, croutones y pasta, lo cual aporta una gran cantidad de sodio, carbohidratos, grasas, etc. Asimismo, también le pongo fruta a mi ensalada, y al consultarlo con mi nutrióloga me dijo que no es muy recomendable considerando que desayuno fruta todos los días. La fruta se fermenta en mi estómago, y cuando se combina con los otros ingredientes de la ensalada no le hace muy bien a mi flora intestinal. 
+
+## Regresión lineal
+
+### Con los datos transformados
+
+````{r}
+
+pairs(datos2[c(1:11)],pch=20)
+
+````
+
+#### modelo simple (con la mejor gráfica)
+
+Este primer modelo simple se hará comparando las calorías con los carbohidratos, esto se debe a que su gráfica tiene una apariencia más cercana a una recta.
+
+````{r}
+
+modelo_bueno<- lm(calorias~carbohidratos, data = datos2)
+
+modelo_bueno
+
+summary(modelo_bueno)
+````
+
+La R cuadrada es muy baja. Los valores p son menores a 0.05. El modelo matemático resultante es 3.22 + 0.3(carbohidratos). El error estándar de los coeficientes es 0.08 para las calorías y 0.03 para los carbohidratos. El error estándar del modelo es de 0.46
+
+##### Diagnóstico del primer modelo
+###### Significancia estadística de los coeficientes
+Analizamos la tabla de resultados anterior. Recordemos que las hipótesis son:
+
+H0:coeficiente es cero (debe quitarse del modelo)
+
+Ha:coeficiente NO es cero (debe dejarse en el modelo)
+
+Regla de decisión: si el valor-p>=0.05 (consideramos el 5% como nuestro riesgo de equivocarnos), entonces NO rechazamos H0
+ y en consecuencia el coeficiente en cuestión es estadísticamente igual a cero por lo que DEBE eliminarse del modelo
+ 
+###### Gráficas de diagnóstico
+
+````{r}
+
+plot(modelo_bueno)
+
+````
+
+
+La primera gráfica no tiene forma de línea horizontal. En la segunda gráfica los valores están muy alejados de la línea. La tercera gráfica tampoco es una línea horizontal y los valores se ven pegados hacia la izquierda. En el caso de la cuarta gráfica hay un dato que representa un riesgo. Probablemente este dato sean las palomitas para llevar del cine. 
+
+Esto significa que tendríamos que usar más variables para nuestro modelo. 
+
+##### Modelo simple (con la peor gráfica)
+
+Este segundo modelo lo haremos con la proteína, la cual es una de las variables que tienen peores gráficas.
+
+````{r}
+
+modelo_malo<- lm(calorias~proteina, data = datos2)
+
+modelo_malo
+
+summary(modelo_malo)
+
+````
+
+La R cuadrada no es muy grande, sin embargo es mayor que la del modelo anterior. Los valores p son menores a 0.05. El modelo matemático resultante es 3.43 + 0.03(proteína). El error estándar de los coeficientes es 0.02 para las calorías y 0.001 para la proteína. El error estándar del modelo es de 0.28. 
+
+##### Diagnóstico del modelo con la peor gráfica
+###### Significancia estadística de los coeficientes
+Analizamos la tabla de resultados anterior. Recordemos que las hipótesis son:
+
+H0:coeficiente es cero (debe quitarse del modelo)
+
+Ha:coeficiente NO es cero (debe dejarse en el modelo)
+
+Regla de decisión: si el valor-p>=0.05 (consideramos el 5% como nuestro riesgo de equivocarnos), entonces NO rechazamos H0
+ y en consecuencia el coeficiente en cuestión es estadísticamente igual a cero por lo que DEBE eliminarse del modelo
+ 
+###### Gráficas de diagnóstico
+
+````{r}
+
+plot(modelo_malo)
+
+````
+
+
+La primera gráfica no tiene una línea horizontal y los valores están amontonados a la derecha. En la segunda gráfica, los puntos no están todas sobre la línea. En la tercera gráfica tampoco se ve una línea horizontal y los puntos están amontonados. En la cuarta gráfica marca algunos valores riesgo
+
+
+### Con los datos sin transformar
+
+````{r}
+
+datos$producto<- as.factor(datos$producto)
+pairs(datos[c(3,4,5,6, 7, 10, 11, 12, 13, 14, 15)],pch=20)
+
+````
+
+
+#### modelo simple (con la mejor gráfica)
+
+Este primer modelo simple se hará comparando las calorías con los carbohidratos, esto se debe a que su gráfica tiene una apariencia más cercana a una recta.
+
+````{r}
+
+modelo_1<- lm(calorias_kcal~carbohidratos_gramos, data = datos)
+
+modelo_1
+
+summary(modelo_1)
+````
+
+La R cuadrada no está tan mal, es mayor a los modelos de los datos transformados. Los valores p son menores a 0.05. El modelo matemático resultante es 58.28 + 6.59(carbohidratos). El error estándar de los coeficientes es 6.32 para las calorías y 0.17 para los carbohidratos El error estándar del modelo es de 81.38 
+
+##### Diagnóstico del primer modelo
+###### Significancia estadística de los coeficientes
+Analizamos la tabla de resultados anterior. Recordemos que las hipótesis son:
+
+H0:coeficiente es cero (debe quitarse del modelo)
+
+Ha:coeficiente NO es cero (debe dejarse en el modelo)
+
+Regla de decisión: si el valor-p>=0.05 (consideramos el 5% como nuestro riesgo de equivocarnos), entonces NO rechazamos H0
+ y en consecuencia el coeficiente en cuestión es estadísticamente igual a cero por lo que DEBE eliminarse del modelo
+ 
+###### Gráficas de diagnóstico
+
+````{r}
+
+plot(modelo_1)
+
+````
+
+En la primera gráfica la línea no es recta y los puntos parecen estar amontonados del lado izquierdo. Para la segunda gráfica, los valores no se muestran sobre la línea punteada. En la tercera gráfica, la línea tampoco es recta y los puntos están muy cargados a la izquierda. En la cuarta gráfica hay un dato riesgo, esto mismo pasó con el modelo de los datos transformados
+
+#### Modelo simple (con la peor gráfica)
+
+
+Este segundo modelo lo haremos con la proteína, la cual es una de las variables que tienen peores gráficas.
+
+````{r}
+
+modelo_2<- lm(calorias_kcal~proteina_gramos, data = datos)
+
+modelo_2
+
+summary(modelo_2)
+
+````
+
+La R cuadrada es más baja que la del modelo anterior. Mejor vamos a analizar las gráficas más adelante. Los valores p son menores a 0.05. El modelo matemático resultante es 44.30 + 13.5004(proteína). El error estándar de los coeficientes es 8.52 y 0.48. El error estándar del modelo es de 101.9 
+
+##### Diagnóstico del modelo con la peor gráfica
+###### Significancia estadística de los coeficientes
+Analizamos la tabla de resultados anterior. Recordemos que las hipótesis son:
+
+H0:coeficiente es cero (debe quitarse del modelo)
+
+Ha:coeficiente NO es cero (debe dejarse en el modelo)
+
+Regla de decisión: si el valor-p>=0.05 (consideramos el 5% como nuestro riesgo de equivocarnos), entonces NO rechazamos H0
+ y en consecuencia el coeficiente en cuestión es estadísticamente igual a cero por lo que DEBE eliminarse del modelo
+ 
+###### Gráficas de diagnóstico
+
+````{r}
+
+plot(modelo_2)
+
+````
+
+La primera gráfica tiene una línea casi recta, sin embargo los puntos no están tan desordenados. En la segunda gráfica, hay varios valores que no tocan la línea punteada. En la tercera gráfica, la línea no está tan recta y los puntos tienen menos orden. En la cuarta gráfica, hay varios valores marcados como peligrosos. 
+
+## Decisión
+
+Como podemos observar, el modelo queda mejor con los datos sin transformar. Así que vamos a crear una nueva tabla en la que solo vienen las variables que analizaremos de los datos sin transformar
+
+```{r}
+
+datos3 <- datos[, c(3,4,5,6, 7, 10, 11, 12, 13, 14, 15, 21)]
+
+```
+
+
+## Regresión lineal múltiple
+
+### Relación entre las variables
+
+Revisamos primero la matriz de gráficas de dispersión. 
+
+
+```{r}
+
+datos3$producto<- as.factor(datos3$producto)
+pairs(datos3[c(1:12)],pch=20)
+
+```
+O bien (sólo es válido para variables numéricas):
+
+````{r}
+
+# Seleccionamos solo las variables numéricas
+library(dplyr)
+
+numericas <- datos3 %>% select_if(is.numeric)
+
+head(numericas)
+
+````
+
+````{r}
+
+round(cor(numericas),digits=2)   # redondeamos a 2 decimales
+
+````
+
+Como estamos analizando la influencia de las calorías en las otras variables, vamos a compararlas. Como las gráficas y resultados pasados habían mostrado, las calorías tienen mucha correlación con los carbohidratos. También tiene una correlación alta con otras variables como la proteína, sodio y calcio. La única correlación mayor a 90 es la de las calorías con los carbohidratos. También encontramos algunas correlaciones negativas, las cuales son azúcares-colesterol y fibra-colesterol. 
+
+### Un primer modelo general: todas las variables
+
+````{r}
+
+modelo<- lm(calorias_kcal~carbohidratos_gramos+colesterol_miligramos+grasas_totales_gramos+proteina_gramos+sodio_miligramos+azucares_gramos+fibra_gramos+potasio_miligramos+calcio_miligramos+tamano_de_la_porcion_gramos+producto, data = datos3)
+
+
+summary(modelo)
+
+````
+
+La r cuadrada da 1, lo cual es sospechoso. Lo más probable es que esto esté sucediendo debido a los productos. El valor p es menor a 0.05. Todos los coeficientes de las variables también son menores a 0.05. Es por eso que nos vamos a quedar con todas las variables. 
+
+#### Expresión matemática
+
+La expresión matemática quedaría como (-4.068e+01) + 4.246e+00(carbohidratos) - 2.932e+00(colesterol) + 9.383e+00(grasas totales) + 3.985e+00(proteína) + 8.416e-02(sodio) + 6.525e-01(azúcares) + 3.503e+00(fibra) + 6.159e-02(potasio) - 2.023e-012(calcio) + 1.986e-01(tamaño de la porción) - 9.947e+00(camarones empanizados) - 5.111e+01(chilaquiles) + 3.209e+02(chiles en nogada) - 5.286e+01(cuernito) + 8.542e+01(dona) + 2.540e+02(ensalada) - 1.372e+01(fruta) + 8.535e+02(hamburguesa con papas) + 4.068e+01(hot cakes) + 8.783e+01(hot cakes ihop) + 1.273e+03(huevo con chorizo) + 1.185e+03(huevo con jamón) - 9.036e+01(licuado de proteína) - 6.627e+01(licuado frutos rojos) + 2.291e+00(mandarina) + 3.837e+00(manzana) + 2.799e+02(media gordita) - 2.115e+02(palomitas doritos) + 1.205e+03(pan tostado con huevo) - 1.372e+01(panqué de limón) + 4.179e+01(papas a la francesa) + 8.448e+02(pechuga cordon blue) + 8.410e+02(picaña) + 4.735e+01(pizza) - 1.708e+01(plátano) + 7.961e+01(pollo enchilado) + 4.407e+02(panqué de arándano) + 1.265e+02(rebanada red velvet) - 5.487e+00(rollitos de pollo con queso)
+
+También se muestra el error de cada coeficiente y del modelo completo (9.707e-13)
+El error de cada coeficiente es 3.517e-12(intercept), 2.503e-14(carbohidratos), 2.484e-13(colesterol), 1.620e-13(grasas totales), 1.117e-13(proteína), 3.774e-15(sodio), 1.349e-13(azúcares), 5.958e-13(fibra), 9.692e-15(potasio), 1.835e-14(calcio), 1.357e-14(tamaño de la porción), 2.214e-12(camarones empanizados), 5.787e-12(chilaquiles), 2.583e-11(chile en nogada), 2.363e-12(cuernito), 7.647e-12(dona), 2.528e-11(ensalada), 1.836e-12(fruta), 7.187e-11(hamburguesa con papas), 3.838e-12(hot cakes), 5.973e-12(hot cakes ihop), 1.099e-10(huevo con chorizo), 9.993e-11(huevo con jamón), 4.518e-12(licuado de proteína), 4.651e-12(licuado de frutos rojos), 1.095e-12(mandarina), 8.421e-13(manzana), 3.674e-11(media gordita), 3.022e-11(palomitas doritos), 1.087e-10(pan tostado con huevo), 1.842e-12(panqué de limón), 4.986e-12(papas a la francesa), 7.461e-11(pechuga cordon blue), 7.486e-11(picaña), 7.366e-12(pizza), 7.940e-13(plátano), 7.867e-12(pollo enchilado), 7.050e-11(rebanada de panqué de arándano), 4.668e-11(rebanada red velvet), 1.849e-12(rollitos de pollo con queso)
+
+
+Vamos a analizar las gráficas de diagnóstico
+
+#### Gráficas de diagnóstico
+
+````{r}
+
+plot(modelo)
+
+````
+
+En la primera gráfica la línea está recta, sin embargo los puntos no se ven tan distribuidos. En la segunda gráfica hay varios valores que no se encuentran sobre la línea, sin emgbargo ya hay más puntos que se encuentran sobre la línea que en modelos pasados. En la tercera gráfica, se ve una línea casi recta y los puntos no están tan distribuidos. En la tercera gráfica vemos que hay algunos valores que presentan un peligro.
+
+#### Multicolinealidad (Relaciones de dependencia entre los regresores)
+
+````{r}
+
+library("Hmisc")
+rcorr(as.matrix(numericas))  # los datos deben estar como matriz
+# Una gráfica más
+
+library(corrplot)
+corrplot(cor(numericas))   # correlograma
+
+````
+
+Podemos ver que hay múltiples variables que tienen una relación de dependencia alta. La mayoría de estas colinealidades pertenecen cuando comparamos las calorías con las demás variables. 
+
+
+````{r}
+
+library(car)
+summary(influence.measures(modelo))
+
+````
+
+Todas estas son las observaciones que marca el programa, vamos a mostrarlas de una manera más visual. 
+
+````{r}
+
+influencePlot(modelo)
+
+````
+
+Podemos ver que hay algunas observaciones que presentan un peligro. Hay que tener más cuidado con las observaciones 3, 13, 19, 21 y 24. 
+
+### Propuesta de R
+
+````{r}
+
+step(object = modelo, direction = "both", trace = 1)  # stepwise mixto
+
+````
+
+De acuerdo a R, me recomienda un modelo que no toma en cuenta el tamaño de la porción. Sin embargo yo la considero una variable importante ya que como no consumo tantos alimentos envasados, debo cuidar más mis porciones cuando preparo y escojo mis alimentos. 
+
+
+# Fase 4. Implementación y comunicación
+
+````{r}
+
+
+levels(datos3$producto)
+
+````
+
+## Pronóstico 
+
+En el siguiente paso asignaremos valores al azar de 10 alimentos para poder hacer la predicción de las calorías. Para hacer esto usaremos el modelo que hicimos anteriormente
+
+
+````{r}
+
+nuevos_datos <- data.frame(calorias_kcal = c(43, 100, 619, 350, 300, 350, 400, 1000, 
+                                             450,300), 
+                           carbohidratos_gramos = c(3,80,4,20,81,50,13,300, 60,100),
+                           colesterol_miligramos = c(0,20,100,0,100,30,50,0,50,130),
+                           grasas_totales_gramos = c(5,46,30,1,5,13,27,30,19,20),
+                           proteina_gramos = c(0,35,10,1,30,25,30,1,40,7),
+                           sodio_miligramos = c(10,900,400,1,200,100,250,700,350,133),
+                           azucares_gramos = c(20,24,13,0,30,3,10,8,9,30),
+                           fibra_gramos = c (1,2,3,8,1,6,7,2,4.5,6.7),
+                           potasio_miligramos = c (589,0,100,100,425,124,351,426,123,215),
+                           calcio_miligramos = c(0,815,100,50,150,545,234,0,55,315),
+                           tamano_de_la_porcion_gramos = c(480, 250, 150, 100, 250, 200, 
+                           300,354,400,80), 
+                           producto = c("fruta", "ensalada", 
+                           "yogurt_con_manzana", 
+                           "manzana", "platano", "hot_cakes", "huevo_con_chorizo",
+                           "palomitas_doritos", "alitas", "cuernito"))
+
+class(nuevos_datos)
+
+predicciones <- predict(modelo, nuevos_datos)
+
+predicciones
+
+````
+## Interpretación y comunicación de los pronósticos
+### Primer pronóstico
+
+Si comiera 480 gramos de fruta (casi medio kilo), con cantidades altas de potasio y muy poco de lo demás, entonces estaría consumiendo aproximadamente 154 calorías. Lo cual no está mal ya que las frutas no tienen mucho aporte calórico. Esto significa que la puedo seguir incluyendo en mi dieta.
+
+### Segundo pronóstico 
+
+Si comiera 250 gramos de ensalada con 815 miligramos de calcio, 0 de potasio, 900 de sodio, 20 de colesterol, 80 gramos de carbohidratos, 46 de grasas totales, 35 de proteína, 24 de azúcares, y 2 de fibra; entonces estaría consumiendo alrededor de 1048 calorías. Esto es mucho para una persona de mi edad. Es por ello que de ahora en adelante cuidaré mis porciones de ensalada, no la comeré todos los días e intentaré que tengan menos carbohidratos y calorías ya que la razón por la que suben mucho es por ingredientes como los croutones, pasta y el pollo sazonado.
+
+### Tercer pronóstico
+
+Si comiera 50 gramos de yogurt con manzana y muy poco de lo demás, esto me estaría aportando 72 calorías. Lo cual no está tan mal considerando que lo considero como mi único alimento cuando lo consumo en la hora de la cena. Este producto puede quedarse en mi dieta.
+
+### Cuarto pronóstico
+
+Si comiera 100 gramos de manzanas,50 miligramos de calcio, 100 de potasio, 1 de soio y 0 de colesterol entonces estaría consumiendo 105 calorías aproximadamente. Lo bueno es que cuando como manzanas solo me como 1 y solo la uso como colación cuando tengo mucha hambre. Esto significa que puedo seguir consumiéndola.
+
+### Quinto pronóstico
+
+Si comiera 250 gramos de plátanos, 150 miligramos de calcio, 425 de potasio, 200 de sodio, 100 de colesterol, 81 gramos de carbohidratos, 5 de grasas, 30 de proteína, 30 de azúcares y 1 de fibra, entonces voy a estar consumiendo alrededor de 244 calorías. Puede que no sea tanto, sin embrago, es bien sabido que los plátanos tienen mucha azúcar aunque sea de la natural. Es por ello que debo procurar consumirlos de vez en cuando como colación
+
+### Sexto pronóstico 
+
+Si comiera 200 gramos de hot cakes, 545 miligramos de calcio, 124 de potasio, 100 de sodio, 30 de colesterol, 50 gramos de carbohidratos, 13 de grasas, 25 de proteína, 3 de azúcares y 6 de fibra, entonces estaría consumiendo alrededor de 484 calorías. Esto tampoco es mucho, así que podría seguir incluyéndolo en mi dieta considerando el tipo de alimento que es. Estos hot cakes no tienen azúcar y están hechos con leche de almendras. Sin embrago la avena puede causar un aumento de peso para algunas personas. Es por eso que debo comerlos moderadamente y de vez en cuando.
+
+### Séptimo pronóstico
+
+Si comiera 300 gramos de huevo con chorizo, 234 milogramos de calcio, 351 de potasio, 250 de sodio, 50 de colesterol, 13 gramos de carbohidratos, 27 de grasas, 15 de proteína, 10 de azúcares, y 7 de fibra, entonces estaría consumiendo alrededor de 1599 calorías. Esto significa que, a pesar de ser una buene fuente de proteína, el chorizo hace que no se vuelva tan saludanle. Esto mismo también mencionó mi nutrióloga, por lo que me ha recomendado comer huevo con chorizo sólo de vez en cuando, máximo una vez a la semana
+
+### Octavo pronóstico
+
+Si comiera 354 gramos de las palomitas de doritos de cinépolis, 621 miligramos de calcio, 426 de potasio, 700 de sodio, 0 de colesterol, 300 gramos de carbohidratos, 17 de grasas, 8 de azúcares, y 2 de fibra, entonces estaría consumiendo alrededor de 1474 calorías. Esto es mucho considerando que las palomitas no son una comida completa, sino una colación/postre. La vez que las comí fue cuando fui al cine, lo cual significa que no las consumo muy seguido, lo cual está bien. Sin embargo, debo estar consciente de lo que estoy consumiendo. Para la próxima vez procuraré llevar mis propios snacks saludables al cine o cambiar el sabor y tamaño de mis palomitas para no comer mucho.
+
+### Noveno pronóstico
+
+Si comiera 400 gramos de alitas, 55 miligramos de calcio, 123 de potasio, 350 de sodio, 50 de colesterol, 4.5 gramos de fibra, 9 de azúcares, 40 de proteína, 19 de grasas y 60 de carbohidratos, entonces estaría consumiendo alrededor de 532 calorías. Lo cual no está tan mal considerando el tamaño de la porción. Sin embrago, al momento de trabajar en este proyecto, no consideré el aderezo ni las salsas ya que comí alitas de distintos sabores, así que al momento de encontrar los datos usé los de las alitas con salsa picante. También debo tener un consumo moderado de las alitas, ya que a pesar de ser proteína. la forma en la que se preparan no es muy sana. También debo procurar no ponerles aderezo, y si lo hago ponerles poco.
+
+### Décimo pronóstico
+
+Si comiera 80 gramos de cuernitos, 315 miligramos de calcio, 215 de potasio, 133 de sodio, 130 de colesterol, 100 gramos de carbohidratos, 20 de grasas, 7 de proteína, 30 de azúcar y 6.7 de fibra, entonces estaría consumiendo alrededor de 185 calorías. La cantidad de calorías no es tan grande, lo cual significa que podría seguir siendo una buena opción de alimento para mis desayunos. Solo que debo tener cuidado con este tipo de alimentos ya que como es pan (aunque tenga lechuga, jamón y queso) es muy probable que cause que aumente de peso. Es por ello que intentaré regular más mi consumo de cuernitos.
+
+# Preguntas finales
+
+## ¿Qué ajustes se tuvieron que hacer a los datos (agregar datos, integrar datos, modificar datos (remover o eliminar información)?
+
+Los ajustes que se tuvieron que hacer a los datos fueron imputación (para no tener datos faltantes), escoger variables y juntarlas en un nuevo conjunto de datos, limpiarlos y convertir la variable producto en factor
+
+## ¿Cuántos modelos se intentaron para obtener el modelo final? 
+
+Se intentaron 5 modelos distintos dos de ellos eran con los datos tranformados y eran regresiones lineales, otros dos fueron regresiones lineales con los datos sin transformar, el último fue el de regresión múltiple, con el que decidimos quedarnos ya que todas las variables tenían un valor p menor a 0.05. También le pedimos a r que mostrara el mejor modelo que pudiera encontrar, sin embargo, este no incluía el tamaño de la porción, y yo considero que esta variable es muy importante ya que, como dicen, todo debe ser con medida y todo en exceso es malo, así que esta variable puede ayudarme a demostrarlo.
+
+
+## ¿Cuáles variables explican el comportamiento del contenido calórico de tus alimentos?
+
+Las variables que explican eel comportamiento del contenido calórico de mis alimentos son el producto, carbohidratos, colesterol, grasas, proteína, sodio, azúcares, fibra, potasio, calcio y tamaño de porción
+
+## ¿Encontraste diferencias entre los grupos calóricos? Si es así, explica.
+
+Sí encontré diferencias entre los grupos calóricos. Confirmé que carios de los alimentos que tienen más calorías son los que tienen más carbohidratos también. Algunos de los alimentos que estaban en las calorías bajas eran frutas
+
+## ¿Qué conclusiones brindó esta fase de modelación para aceptar o rechazar la hipótesis inicial? Recuerda que esta es: Si consumo cierta cantidad calórica, ¿puedo tener cambios en mi masa corporal (peso) en un determinado tiempo?
+
+Esta fase de la modelación me ayudó a llegar a la conclusión de que sí puedo tener cambios en mi masa corporal en un determinado tiempo si consumo cierta cantidad calórica ya que al finalizar este proyecto me dí cuenta de que perdí alrededor de dos kilos desde que empecé. Sin embargo, soy una persona que realiza mucha actividad física, por lo que podría haber bajado más. Me di cuenta de que hay varias cosas que todavía puedo mejorar de mi dieta.
+
+# Conclusiones
+
+Este proyecto me ayudó mucho a ser más consciente de lo que consumo diariamente. Esto hizo que me diera cuenta de aquellos hábitos alimenticios que debo conservar, los que debo modificar y aquellos que debo eliminar. Espero poder seguir mejorando mi alimentación para poder tener una mejor salud no solo a corto plazo, sino a largo plazo también. También aprendí mucho sobre la disciplina ya que al comenzar este proyecto me prometí a mí misma esofrzarme por tener una buena alimentación, asimismo, me comprometí a anotar mis datos todos los días sin falta (excepto por la semana 6). Como pudimos ver con este modelo y la expresión matemática obtenida con el modelo, aquellas variables que más aumentan la cantidad de calorías son los carbohidratos, las grasas, sodio, azúcares y el potasio. Mientras que los alimentos que más aportan a las calorías son las donas, hamburguesa con papas, hot cakes de ihop, pechuga cordon blue, picaña, pizza, papas a la francesa, pollo enchilado, y panqué de arándano. Todo esto tiene sentido ya que son alimentos conocidos por su gran contenido calórico. Lo bueno es que no son alimentos que consumo muy seguido ya que solo los como cuando salgo a comer fuera con amigos o familia o cuando hay algún festejo.
+
+Asimismo, los alimentos que menos calorías aportan son la fruta, cuernito, licuados, plátanos y rollitos de pollo con queso. Sin embargo, hay algunas variables que marca r con las que no concuerdo mucho ya que, por ejemplo, dice que los camarones empanizados son de los alimentos que menos calorías aportan, lo cual no es cierto ya que los alimentos empanizados son conocidos por su gran cantidad calórica. Este modelo podría mejorarse si hubieran más datos
