@@ -1,0 +1,5 @@
+Intensamente 2,2024,2.5,TRA01,0
+Beetlejuice 2,2024,2.3,TRA02,0
+Deadpool & Wolverine,2024,2.5,TRA03,0
+Anora,2024,0.8,TRA05,0
+Maxxxine,2024,2.5,TRA06,0
