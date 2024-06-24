@@ -1,0 +1,8 @@
+Barbie,2023,Greta Gerwig,PEL01,0
+Wonka,2023,Paul King,PEL02,0
+Scream VI,2023,Tyler Gillett,PEL03,0
+Smile,2022,Parker Finn,PEL04,0
+Valiente,2012,Brenda Chapman,PEL05,0
+Damsel,2024,Juan Carlos Fresnadillo,PEL06,0
+The Menu,2022,Mark Mylod,PEL07,0
+Mujercitas,2019,Greta Gerwig,PEL08,0

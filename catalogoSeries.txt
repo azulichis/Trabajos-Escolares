@@ -1,0 +1,6 @@
+Stranger Things, 2016, 4,SER01,0
+Beef, 2023, 1,SER02,0
+Normal People, 2020, 1,SER03,0
+Gilmore Girls, 2000, 7,SER04,0
+The Queens Gambit, 2020, 1,SER05,0
+WandaVision, 2021,1,SER06,0
